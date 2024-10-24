@@ -1,0 +1,40 @@
+const express = require("express");
+const {open}= require("sqlite");
+const sqlite3 = require("sqlite3");
+const path = require("path");
+const { request } = require("http");
+
+const dbPath = path.join(__dirname,"contactdetails.db");
+let db=null;
+const app = express();
+
+app.use(express.json());
+
+const initializeDBAndServer = async () => {
+    try {
+      db = await open({
+        filename: dbPath,
+        driver: sqlite3.Database,
+      });
+      app.listen(4002, () => {
+        console.log("Server Running at http://localhost:4002/");
+      });
+    } catch (e) {
+      console.log(`DB Error: ${e.message}`);
+      process.exit(1);
+    }
+  };
+  initializeDBAndServer();
+
+app.get("/",(request,response)=>{
+    response.send('successfully')
+});
+
+
+
+  
+
+
+
+
+
